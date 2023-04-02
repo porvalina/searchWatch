@@ -8,7 +8,7 @@ require_once "vendor/autoload.php";
 
 // Create a simple "default" Doctrine ORM configuration for Attributes
 $config = ORMSetup::createAttributeMetadataConfiguration(
-    paths: array(__DIR__."/src"),
+    paths: array(__DIR__."/src/models"),
     isDevMode: true,
 );
 // or if you prefer annotation, YAML or XML
