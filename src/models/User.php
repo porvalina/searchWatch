@@ -15,29 +15,53 @@ class User
     
     /** @var string */
     #[ORM\Column(type: 'string')]
-    private string $name;
+    private string $email;
 
+    /** @var string */
+    #[ORM\Column(type: 'string')]
+    private string $password;
 
     public function getId(): int|null
     {
         return $this->id;
     }
 
-    public function getName(): string
+    public function getEmail(): string
     {
-        return $this->name;
+        return $this->email;
     }
 
-    public function setName(string $name): void
+    public function setEmail(string $email): void
     {
-        $this->name = $name;
+        $this->email = $email;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    public function addToUser(SearchWatch $searchWatches): void
+    {
+        $this->searchWatches[] = $searchWatches;
+    }
+
+    /** @return Collection<int, SearchWatch> */
+    public function getSearchWatches(): Collection
+    {
+        return $this->watches;
     }
 
     /** @var Collection<int, SearchWatch> */
-    private Collection $watches;
+    private Collection $searchWatches;
 
     public function __construct()
     {
-        $this->watches = new ArrayCollection();
+        $this->searchWatches = new ArrayCollection();
     }
 }

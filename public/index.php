@@ -3,33 +3,50 @@ define("PROJECT_ROOT", dirname(__DIR__) . "/");
 
 require_once '../vendor/autoload.php';
 require_once '../bootstrap.php';
+require_once('../src/models/User.php');
+require_once('../src/models/SearchWatch.php');
+require_once('../src/controllers/UserController.php');
+require_once('../src/controllers/SearchWatchController.php');
 session_start();
 
 if (isset($_SESSION['user'])) {
-  require_once('../src/models/User.php');
-  $loggeduser = $entityManager->find("User", $_SESSION['user']);
+  $loggeduser = $entityManager->getRepository(User::class)
+            ->findOneBy(['id' => $_SESSION['user']]);
+  if (!$loggeduser) {
+    $_SESSION['user'] = null;
+    header("Location: index.php?page=Users&action=login");
+  }
+  // $loggeduser = $entityManager->find("User", $_SESSION['user']);
 } else {
   $loggeduser = NULL;
 }
 
 $request = $_SERVER['REQUEST_URI'];
-$query = parse_url($request)['query'];
-$page = explode("=", $query);
+parse_str(parse_url($request)['query'], $params);
+$userController = new UserController($entityManager);
+$searchWatchController = new SearchWatchController($entityManager);
 
-switch ($page[1]) {
+switch ($params['page']) {
+    case 'Registration':
+      $userController->registration();
+      break;
     case 'Users':
-        require_once('../src/controllers/UserController.php');
-        $controller = new UserController();
-        $controller->render();
-        break;
+      if ($params['action'] == 'login') {
+        $userController->login();
+      }
+      if ($params['action'] == 'registration') {
+        $userController->registration();
+      }
+      break;
     case 'SearchWatch':
-      require_once('../src/controllers/SearchWatchController.php');
-      $controller = new SearchWatchController();
-      $controller->render();
+      if ($params['action'] == 'add') {
+        $searchWatchController->addSearchWatch($loggeduser);
+      }
       break;
     default:
-      $templates = new League\Plates\Engine(PROJECT_ROOT . "src/views");
-      echo $templates->render('notfound');
+      if ($loggeduser) {
+        $searchWatchController->list($loggeduser);
+      } else {
+        header("Location: index.php?page=Users&action=login");
+      }
 }
-#echo "Alina i Igor molodec";
-

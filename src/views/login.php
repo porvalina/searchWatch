@@ -1,21 +1,16 @@
-<h1>Kirjautuminen</h1>
-
-<form action="" method="POST">
-  <div>
-    <label>Sähköposti:</label>
-    <input type="text" name="email">
+<?php if ($error) echo $error ?>
+<form method="post" action="index.php?page=Users&action=login" name="signin-form">
+  <div class="form-element">
+    <label>Email</label>
+    <input type="email" name="email" value="<?php echo $email ?>" required />
   </div>
-  <div>
-    <label>Salasana:</label>
-    <input type="password" name="password">
+  <div class="form-element">
+    <label>Password</label>
+    <input type="password" name="password" required />
   </div>
-  <div class="error"><?= getValue($error,'virhe'); ?></div>
-  <div>
-    <input type="submit" name="send" value="Kirjaudu">
-  </div>
+  <button type="submit" name="login" value="login">Log In</button>
 </form>
 
 <div class="info">
-  Jos sinulla ei ole vielä tunnuksia, niin voit luoda ne <a href="lisaa_tili">täällä</a>.<br>
-  Jos olet unohtanut salasanasi, niin voit vaihtaa sen <a href="tilaa_vaihtoavain">täällä</a>.
+  Jos sinulla ei ole vielä tunnuksia, niin voit luoda ne <a href="index.php?page=Users&action=registration">täällä</a>.<br>
 </div>
