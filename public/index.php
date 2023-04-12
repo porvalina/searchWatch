@@ -27,9 +27,6 @@ $userController = new UserController($entityManager);
 $searchWatchController = new SearchWatchController($entityManager);
 
 switch ($params['page']) {
-    case 'Registration':
-      $userController->registration();
-      break;
     case 'Users':
       if ($params['action'] == 'login') {
         $userController->login();
