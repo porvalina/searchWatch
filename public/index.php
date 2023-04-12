@@ -16,7 +16,6 @@ if (isset($_SESSION['user'])) {
     $_SESSION['user'] = null;
     header("Location: index.php?page=Users&action=login");
   }
-  // $loggeduser = $entityManager->find("User", $_SESSION['user']);
 } else {
   $loggeduser = NULL;
 }
